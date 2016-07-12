@@ -1,0 +1,3 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(C:\Users\mnoren\workspace\REST server\src\main\resources\application.conf,C:\Users\mnoren\workspace\REST server\target\scala-2.10\classes\application.conf)[0m
+[0m[[0mdebug[0m] [0m	(C:\Users\mnoren\workspace\REST server\src\main\resources\logback.xml,C:\Users\mnoren\workspace\REST server\target\scala-2.10\classes\logback.xml)[0m

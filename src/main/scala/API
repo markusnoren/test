@@ -1,0 +1,55 @@
+import scala.concurrent.{ExecutionContext, Future}
+
+
+
+class ContactService(implicit val executionContext: ExecutionContext)
+{
+  var contacts = Vector.empty[Contacts]
+
+  def createContact(contact: Contact): Future[Option[String]]= Future
+  {
+    contacts.find(_.id == contacts.id) match
+    {
+      case Some(c) => None //Confilicting id
+      case None =>
+        contacts = contacts:+contact
+        Some(contact.id)
+    }
+  }
+
+  def getContact(id: Int): Future[Option[Contact]]  = Future
+  {
+    contacts.find(_.id == id)
+  }
+
+  def updateContact(id: Int, update: ContactUpdate): Future[Option[Contact]] =
+  {
+    def updateEntity(contact:Contact):Contact =
+    {
+      val firstName = update.firstName.getOrElse(contact.firstName)
+      val lastName = update.lastName.getOrElse(contact.lastName)
+      val email = update.email.getOrElse(contact.email)
+      Contact(id, firstName, lastName, email)
+    }
+
+    getContact(id).flatMap
+    {
+      maybeContact => maybeContact match
+      {
+        case None => Future{None}
+        case Some(Contact) =>
+          val updatedContact = updateEntity(contact)
+          deleteContact(id).flatMap
+          {
+            _ =>createContact(updatedContact).map(_ =>Some(updatedContact))
+          }
+      }
+    }
+  }
+
+  def deleteContact(id: Int): Future[Unit] = Future
+  {
+    contacts = contacts.filter(_.id != id)
+  }
+
+}
