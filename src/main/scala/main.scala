@@ -34,7 +34,7 @@ object Boot extends App
   implicit val timeout = Timeout(5.seconds)
 
   //start a httpserver with apiActor as its handler
-  IO(Http) ? Http.Bind(accessActor, interface = "localhost", port = 8080)
+  IO(Http) ? Http.Bind(accessActor, interface = "127.0.0.1", port = 9160)
 
   println("Hit any key to exit.")
   val result = readLine()
@@ -52,7 +52,7 @@ import ContactProtocol._
 class CassandraAccessActor extends Actor with HttpService with ActorLogging
 {
   //Create a connection to cassandra
-  val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost").setAppName("CassandraAccessor").setMaster("local")
+  val conf = new SparkConf(true).set("spark.cassandra.connection.host", "127.0.0.1:9160").setAppName("CassandraAccessor").setMaster("local")
   val sc = new SparkContext(conf)
 
   //val keyspace = "contacts"
