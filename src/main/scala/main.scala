@@ -1,160 +1,4 @@
 package org.smartjava;
-/*
-import akka.actor.{ActorSystem, Props}
-import akka.io.IO
-import spray.can.Http
-import akka.pattern.ask
-import akka.util.Timeout
-import com.typesafe.config.ConfigFactory
-import spray.can.Http
-import scala.concurrent.duration._
-
-
-import org.apache.spark.SparkContext._
-import org.apache.spark.{SparkContext, SparkConf}
-import com.datastax.spark.connector._
-*/
-
-/*
-object Boot extends App
-{
-/*
-  //Create actor system
-  implicit val system = ActorSystem()
-  val service = system.actorOf(Props[SJServiceActor], "sj.rest.service")
-
-  implicit val timeout = Timeout(5.seconds)
-  IO(Http) ? Http.Bind(service, interface = "localhost", port = 8080)
-
-  println("Lol")
-  */
-  println("moarlolz")
-
-
-  val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost").setAppName("SparkTest").setMaster("local")
-  val sc = new SparkContext(conf)
-  //sc.stop
-
-  val rdd = sc.cassandraTable[Test]("test", "my_table")
-
-  case class Test(key: String, value: Int)
-
-  println(rdd.count)
-  val collection = sc.parallelize(Seq(("Key6", 6), ("Key7", 7)))
-
-  collection.saveToCassandra("test","my_table", SomeColumns("key", "value"))
-
-
-}
-*/
-
-//Robot Test
-/*
-import akka.actor.{ActorSystem, Props}
-import akka.io.IO
-import akka.pattern.ask
-import akka.util.Timeout
-import spray.can.Http
-import scala.concurrent.duration._
-
-object SprayApiApp extends App
-{
-  //Create actor system
-  implicit val system = ActorSystem("SprayApiApp")
-  //Create actor
-  val apiActor = system.actorOf(Props[ApiActor],"apiActor")
-  //A timeout is needed for the ask method next
-  implicit val timeout = Timeout(5.seconds)
-
-  //start a httpserver with apiActor as its handler
-  IO(Http) ? Http.Bind(apiActor, interface = "localhost", port = 8080)
-}
-
-import akka.actor.{ActorLogging, Actor}
-import spray.http.MediaTypes
-import spray.httpx.SprayJsonSupport._
-import spray.json.DefaultJsonProtocol
-import spray.routing._
-
-//Robotprotocol for json conversions
-object RobotProtocol extends DefaultJsonProtocol
-{
-  case class Robot(name: String)
-
-  implicit val RobotFormat = jsonFormat1(Robot)
-}
-import RobotProtocol._
-
-
-class ApiActor extends Actor with HttpService with ActorLogging
-{
-  var robots = List(Robot("R2D2"), Robot("Asimo"))
-
-  def actorRefFactory = context
-
-  def receive = runRoute(apiRoute)
-
-  val apiRoute: Route =
-  {
-    path("robots")
-    {
-      get//Returns all robots
-      {
-        log.info("Building port route")
-        complete
-        {
-          log.info("Executing get route")
-          robots
-        }
-      } ~ post // add a new robot
-      {
-        log.info("Building post route")
-        handleWith
-        {
-          robot:Robot=>
-            log.info("Executing post route")
-            robots = robot :: robots
-            robot
-        }
-      /*} ~ put //edit a robot
-      {
-        log.info("Building post route")
-        handleWith
-        {
-          (oldRobot:Robot, newRobot:Robot)=>
-            log.info("Executing put route")
-            robots = robots.filter(_.name != oldRobot.name)    //Remove old robot
-            robots =  newRobot :: robots                       //Add new robot
-            newRobot
-        }
-
-*/
-      } ~ delete //Delete a robot
-      {
-        log.info("Building delete route")
-        handleWith
-        {
-          robot:Robot=>
-            log.info("Executing delete route")
-            robots = robots.filter(_.name != robot.name)
-            robot
-
-        }
-      } ~ path("")
-      {
-        respondWithMediaType(MediaTypes. `text/html`)
-        {
-          complete
-          {
-            <a href ="/robots"> The list of robots </a>
-          }
-        }
-      }
-    }
-  }
-
-}
-*/
 
 //Cassandra spark spray test
 import akka.actor.{ActorSystem, Props}
@@ -222,6 +66,13 @@ class CassandraAccessActor extends Actor with HttpService with ActorLogging
   {
     get
     {
+      path("test")
+      {
+        complete
+        {
+          "n'yelloh"
+        }
+      }~
       path(Segment / Segment / "show" / "all")
       {
         (keyspace,table)=>
